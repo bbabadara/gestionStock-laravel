@@ -1,29 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
-<h1 class="text-center mt-5">Modifier l'article</h1>
 
-<div class="container">
-    <form action="{{ route('articles.update', $article->id) }}" method="POST">
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Ajouter un article</h2>
+
+    <!-- Affichage des messages de succès -->
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <!-- Formulaire pour ajouter un article -->
+    <form action="{{ route('articles.store') }}" method="POST" class="bg-light p-4 rounded shadow-sm">
         @csrf
-        @method('PUT')  <!-- Indique que c'est une requête PUT -->
 
-        <div class="form-group">
-            <label for="nom">Nom</label>
-            <input type="text" class="form-control" id="nom" name="nom" value="{{ $article->nom }}" required>
+        <!-- Nom de l'article -->
+        <div class="form-group mb-3">
+            <label for="nom">Nom de l'article</label>
+            <input type="text" name="nom" placeholder="Nom de l'article" required class="form-control @error('nom') is-invalid @enderror" value="{{ old('nom') }}" />
+            @error('nom')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
 
-        <div class="form-group">
-            <label for="quantite">Quantité</label>
-            <input type="number" class="form-control" id="quantite" name="quantite" value="{{ $article->quantite }}" required>
-        </div>
-
-        <div class="form-group">
+        <!-- Prix -->
+        <div class="form-group mb-3">
             <label for="prix">Prix</label>
-            <input type="number" class="form-control" id="prix" name="prix" value="{{ $article->prix }}" required>
+            <input type="text" name="prix" placeholder="Prix" required class="form-control @error('prix') is-invalid @enderror" value="{{ old('prix') }}" />
+            @error('prix')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Mettre à jour</button>
+        <!-- Quantité -->
+        <div class="form-group mb-3">
+            <label for="quantite">Quantité</label>
+            <input type="text" name="quantite" placeholder="Quantité" required class="form-control @error('quantite') is-invalid @enderror" value="{{ old('quantite') }}" />
+            @error('quantite')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <button type="submit" class="btn btn-primary">Ajouter</button>
     </form>
 </div>
 

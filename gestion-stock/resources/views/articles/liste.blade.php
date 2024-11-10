@@ -30,7 +30,7 @@
                         <tr>
                             <td>{{ $article->nom }}</td>
                             <td>{{ $article->quantite }}</td>
-                            <td>{{ number_format($article->prix, 2) }} €</td> <!-- Format price with 2 decimals -->
+                            <td>{{ number_format($article->prix, 2) }} fcfa</td> <!-- Format price with 2 decimals -->
                             <td class="d-flex">
                                 <!-- Edit Button -->
                                 <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-warning btn-sm me-2">
@@ -53,14 +53,27 @@
         </div>
 
         <!-- Pagination links -->
-        <div class="d-flex justify-content-center mt-3">
-          <nav aria-label="Page navigation">
-              <ul class="pagination">
-                  {{ $articles->links() }}
-              </ul>
-          </nav>
-      </div>
-      
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {{ $articles->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $articles->previousPageUrl() }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    @foreach ($articles->getUrlRange(1, $articles->lastPage()) as $page => $url)
+                        <li class="page-item {{ $page == $articles->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                        </li>
+                    @endforeach
+                    <li class="page-item {{ $articles->hasMorePages() ? '' : 'disabled' }}">
+                        <a class="page-link" href="{{ $articles->nextPageUrl() }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 
 @endsection
